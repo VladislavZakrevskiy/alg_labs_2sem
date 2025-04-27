@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/vladzakrevski/Desktop/labs_2sem/lab2 ЛР26",
+      "program": "/Users/vladzakrevski/Desktop/labs_2sem/lab2 ЛР26/build/Debug/outDebug"
+    }
+  ]
+}
