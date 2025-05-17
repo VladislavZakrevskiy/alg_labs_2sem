@@ -168,8 +168,18 @@ void find_max_depth_non_terminal(Node* node, int current_depth, MaxDepthInfo* in
     }
 }
 
+void wait_for_enter() {
+    char temp[2];
+    printf("Нажмите Enter для продолжения...");
+    fgets(temp, sizeof(temp), stdin);
+    // Очистка буфера, если остались символы
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 int main() {
     Node* root = NULL;
+    char choice_str[10];
     int choice;
     do {
         printf("\033[H\033[J");
@@ -181,25 +191,48 @@ int main() {
         printf("4. Вычислить функцию\n");
         printf("5. Выход\n");
         printf("Выберите действие: ");
-        scanf("%d", &choice);
-        
-        while (getchar() != '\n');
+        fgets(choice_str, sizeof(choice_str), stdin);
+        choice_str[strcspn(choice_str, "\n")] = '\0'; // Удаляем символ новой строки
+
+        if (strlen(choice_str) != 1 || choice_str[0] < '1' || choice_str[0] > '5') {
+            printf(RED "Неверный выбор.\n" RESET);
+            wait_for_enter();
+            continue;
+        }
+        choice = choice_str[0] - '0';
 
         switch (choice) {
             case 1: {
                 printf("\n=== Добавление узла ===\n");
                 if (root == NULL) {
                     float value;
+                    char input[20];
                     printf("Введите значение корня: ");
-                    scanf("%f", &value);
+                    fgets(input, sizeof(input), stdin);
+                    if (sscanf(input, "%f", &value) != 1) {
+                        printf(RED "Неверный ввод значения.\n" RESET);
+                        wait_for_enter();
+                        break;
+                    }
                     root = create_node(value);
                     printf(GREEN "Корень создан.\n" RESET);
                 } else {
                     float parent_value, new_value;
+                    char input_parent[20], input_new[20];
                     printf("Введите значение родительского узла: ");
-                    scanf("%f", &parent_value);
+                    fgets(input_parent, sizeof(input_parent), stdin);
+                    if (sscanf(input_parent, "%f", &parent_value) != 1) {
+                        printf(RED "Неверный ввод родительского значения.\n" RESET);
+                        wait_for_enter();
+                        break;
+                    }
                     printf("Введите значение нового узла: ");
-                    scanf("%f", &new_value);
+                    fgets(input_new, sizeof(input_new), stdin);
+                    if (sscanf(input_new, "%f", &new_value) != 1) {
+                        printf(RED "Неверный ввод нового значения.\n" RESET);
+                        wait_for_enter();
+                        break;
+                    }
                     Node* parent = find_node(root, parent_value);
                     if (parent == NULL) {
                         printf(RED "Родитель не найден.\n" RESET);
@@ -209,16 +242,14 @@ int main() {
                         printf(GREEN "Узел добавлен.\n" RESET);
                     }
                 }
-                printf("Нажмите Enter для продолжения...");
-                getchar();
+                wait_for_enter();
                 break;
             }
             case 2: {
                 printf("\n=== Визуализация дерева ===\n");
                 bool levels[100] = {false};
                 print_tree(root, levels, 0, true);
-                printf("\nНажмите Enter для продолжения...");
-                getchar();
+                wait_for_enter();
                 break;
             }
             case 3: {
@@ -227,13 +258,18 @@ int main() {
                     printf(RED "Дерево пусто.\n" RESET);
                 } else {
                     float value;
+                    char input[20];
                     printf("Введите значение узла для удаления: ");
-                    scanf("%f", &value);
+                    fgets(input, sizeof(input), stdin);
+                    if (sscanf(input, "%f", &value) != 1) {
+                        printf(RED "Неверный ввод значения.\n" RESET);
+                        wait_for_enter();
+                        break;
+                    }
                     delete_node(&root, value);
                     printf(GREEN "Узел удален.\n" RESET);
                 }
-                printf("Нажмите Enter для продолжения...");
-                getchar();
+                wait_for_enter();
                 break;
             }
             case 4: {
@@ -250,8 +286,7 @@ int main() {
                         printf("Нет нетерминальных вершин.\n");
                     }
                 }
-                printf("Нажмите Enter для продолжения...");
-                getchar();
+                wait_for_enter();
                 break;
             }
             case 5:
@@ -259,8 +294,7 @@ int main() {
                 break;
             default:
                 printf(RED "Неверный выбор.\n" RESET);
-                printf("Нажмите Enter для продолжения...");
-                getchar();
+                wait_for_enter();
         }
     } while (choice != 5);
 

@@ -21,8 +21,8 @@ int main() {
     list_init(&lst_1);
 
     data_type d1_1 = {5, 50};
-    data_type d2_1 = {3, 30};
-    data_type d3_1 = {8, 80};
+    data_type d2_1 = {5, 30};
+    data_type d3_1 = {5, 30};
     data_type d4_1 = {1, 10};
     list_push_back(&lst_1, d1_1);
     list_push_back(&lst_1, d2_1);

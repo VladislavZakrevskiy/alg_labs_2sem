@@ -18,7 +18,6 @@ typedef struct {
     size_t capacity;
 } list;
 
-// Добавляем объявления функций
 void list_init(list *lst);
 void list_destroy(list *lst);
 bool list_is_empty(const list *lst);
